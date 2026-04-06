@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Модульные тесты модели Film")
 class FilmTest {
 
     private Validator validator;
@@ -22,6 +24,7 @@ class FilmTest {
     }
 
     @Test
+    @DisplayName("Создание корректного фильма")
     void shouldCreateValidFilm() {
         Film film = new Film();
         film.setName("Valid Film");
@@ -34,6 +37,7 @@ class FilmTest {
     }
 
     @Test
+    @DisplayName("Название фильма не может быть пустым")
     void shouldFailWhenNameIsBlank() {
         Film film = new Film();
         film.setName("");
@@ -47,6 +51,7 @@ class FilmTest {
     }
 
     @Test
+    @DisplayName("Описание фильма не должно превышать 200 символов")
     void shouldFailWhenDescriptionTooLong() {
         Film film = new Film();
         film.setName("Film");
@@ -60,26 +65,7 @@ class FilmTest {
     }
 
     @Test
-    void shouldFailWhenReleaseDateBeforeMin() {
-        Film film = new Film();
-        film.setName("Film");
-        film.setDescription("Desc");
-        film.setReleaseDate(LocalDate.of(1895, 12, 27));
-        film.setDuration(100);
-
-        Set<ConstraintViolation<Film>> violations = validator.validate(film);
-        assertFalse(violations.isEmpty());
-        // Проверка кастомного сообщения валидации (если вы сделали кастомную аннотацию)
-        // Или проверяем стандартное сообщение @NotNull? Но releaseDate не null.
-        // В модели нет аннотации для минимальной даты, она проверяется в контроллере.
-        // Для чистого юнит-теста модели мы не можем проверить дату релиза,
-        // потому что валидация даты реализована в контроллере.
-        // Поэтому тест на дату релиза пропускаем или проверяем через ручную валидацию.
-        // Лучше оставить тест только для аннотаций модели.
-        // Вместо этого протестируем null для releaseDate:
-    }
-
-    @Test
+    @DisplayName("Дата релиза не может быть null")
     void shouldFailWhenReleaseDateIsNull() {
         Film film = new Film();
         film.setName("Film");
@@ -93,6 +79,7 @@ class FilmTest {
     }
 
     @Test
+    @DisplayName("Продолжительность фильма должна быть положительным числом")
     void shouldFailWhenDurationIsZeroOrNegative() {
         Film film = new Film();
         film.setName("Film");
