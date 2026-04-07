@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Модульные тесты модели User")
 class UserTest {
 
     private Validator validator;
@@ -22,6 +24,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Создание корректного пользователя")
     void shouldCreateValidUser() {
         User user = new User();
         user.setEmail("user@example.com");
@@ -34,6 +37,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Email не может быть пустым")
     void shouldFailWhenEmailIsBlank() {
         User user = new User();
         user.setEmail("");
@@ -47,6 +51,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Email должен содержать символ @")
     void shouldFailWhenEmailWithoutAt() {
         User user = new User();
         user.setEmail("wrong.email");
@@ -60,6 +65,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Логин не может быть пустым")
     void shouldFailWhenLoginIsBlank() {
         User user = new User();
         user.setEmail("user@example.com");
@@ -73,6 +79,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Логин не должен содержать пробелы")
     void shouldFailWhenLoginHasSpaces() {
         User user = new User();
         user.setEmail("user@example.com");
@@ -86,6 +93,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Имя пользователя может быть пустым (будет заменено на логин)")
     void shouldAllowNameToBeBlank() {
         User user = new User();
         user.setEmail("user@example.com");
@@ -94,10 +102,11 @@ class UserTest {
         user.setBirthday(LocalDate.now());
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertTrue(violations.isEmpty()); // имя может быть пустым
+        assertTrue(violations.isEmpty());
     }
 
     @Test
+    @DisplayName("Дата рождения не может быть в будущем")
     void shouldFailWhenBirthdayInFuture() {
         User user = new User();
         user.setEmail("user@example.com");
@@ -111,6 +120,7 @@ class UserTest {
     }
 
     @Test
+    @DisplayName("Дата рождения не может быть null")
     void shouldFailWhenBirthdayIsNull() {
         User user = new User();
         user.setEmail("user@example.com");
